@@ -3,8 +3,13 @@
 require "httparty"
 require "json"
 
+host = env["KUBERNETES_SERVICE_HOST"]
+port = env["KUBERNETES_PORT_443_TCP_PORT"]
+
+#curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://kubernetes/
+
 def certificates
-  response = HTTParty.get("http://localhost:8001/api/v1/services")
+  response = HTTParty.get("https://#{host}:#{port}/api/v1/services")
 
   json = JSON.parse(response.body)
 
