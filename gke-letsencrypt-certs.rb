@@ -3,12 +3,12 @@
 require "httparty"
 require "json"
 
-def certs
+def certificates
   response = HTTParty.get("http://localhost:8001/api/v1/services")
 
   json = JSON.parse(response.body)
 
-  json["items"].each_with_object(certs) do |item, collection|
+  json["items"].each_with_object(certificates) do |item, collection|
     key = %w(metadata annotations acme/certificates)
 
     next unless item.dig(key)
@@ -24,4 +24,4 @@ def certs
   end
 end
 
-puts [{"targets" => certs.flatten}].to_json
+puts [{"targets" => certificates.flatten}].to_json
