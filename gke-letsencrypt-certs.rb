@@ -24,4 +24,4 @@ def certificates
   end
 end
 
-puts [{"targets" => certificates.flatten}].to_json
+puts [{ "targets" => certificates.flatten }].to_json
