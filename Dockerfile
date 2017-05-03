@@ -76,4 +76,4 @@ ADD /Gemfile /Gemfile
 
 RUN bundle install
 
-CMD [ "/gke-letsencrypt-certs.rb" ]
+CMD [ "/run.sh", "10", "/gke-letsencrypt-certs.rb" ]
