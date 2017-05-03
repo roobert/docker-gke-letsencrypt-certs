@@ -73,6 +73,7 @@ RUN mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
 
 ADD /gke-letsencrypt-certs.rb /gke-letsencrypt-certs.rb
 ADD /Gemfile /Gemfile
+ADD /run.sh /run.sh
 
 RUN bundle install
 
