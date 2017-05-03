@@ -3,8 +3,8 @@
 require "httparty"
 require "json"
 
-host = env["KUBERNETES_SERVICE_HOST"]
-port = env["KUBERNETES_PORT_443_TCP_PORT"]
+host = ENV["KUBERNETES_SERVICE_HOST"]
+port = ENV["KUBERNETES_PORT_443_TCP_PORT"]
 
 #curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://kubernetes/
 
