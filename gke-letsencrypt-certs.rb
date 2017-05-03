@@ -3,17 +3,24 @@
 require "httparty"
 require "json"
 
-host = ENV["KUBERNETES_SERVICE_HOST"]
-port = ENV["KUBERNETES_PORT_443_TCP_PORT"]
+def token
+  File.read("/var/run/secrets/kubernetes.io/serviceaccount/token")
+end
 
-#curl -v --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://kubernetes/
+def cacert
+  "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+end
 
 def certificates
-  response = HTTParty.get("https://#{host}:#{port}/api/v1/services")
+  host = ENV["KUBERNETES_SERVICE_HOST"]
+  port = ENV["KUBERNETES_PORT_443_TCP_PORT"]
+  headers = { "Authorization" => "Bearer #{token}"}
+
+  response = HTTParty.get("https://#{host}:#{port}/api/v1/services", :headers => headers, :ssl_ca_file => cacert)
 
   json = JSON.parse(response.body)
 
-  json["items"].each_with_object(certificates) do |item, collection|
+  json["items"].each_with_object({}) do |item, collection|
     key = %w(metadata annotations acme/certificates)
 
     next unless item.dig(key)
