@@ -46,7 +46,7 @@ def service(address)
     "ID"      => address,
     "Name"    => address,
     "Address" => "127.0.0.1",
-    "Tags"    => [ "gke-letsencrypt-cert-cn" ]
+    "Tags"    => [ "gke-letsencrypt-cert-cn", "cert-cn" ]
   }
 end
 
