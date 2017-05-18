@@ -26,15 +26,15 @@ def certificates
   json = JSON.parse(response.body)
 
   json["items"].each_with_object({}) do |item, collection|
-    key = %w(metadata annotations acme/certificates)
+    key = %w(metadata annotations acme/certificate)
 
-    next unless item.dig(key)
+    next unless item.dig(*key)
 
     # parse as JSON if value is array
     begin
-      values = JSON.parse(item.dig(key))
+      values = JSON.parse(item.dig(*key))
     rescue
-      values = item.dig(key)
+      values = item.dig(*key)
     end
 
     collection << values

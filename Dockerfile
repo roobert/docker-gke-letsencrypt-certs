@@ -77,4 +77,4 @@ ADD /run.sh /run.sh
 
 RUN bundle install
 
-CMD [ "/run.sh", "10", "/gke-letsencrypt-certs.rb", "/target_group/gke-letsencrypt-ssl-certs.json" ]
+CMD [ "/run.sh", "10", "/gke-letsencrypt-certs.rb" ]
