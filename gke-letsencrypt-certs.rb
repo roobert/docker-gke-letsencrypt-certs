@@ -2,6 +2,11 @@
 
 require "httparty"
 require "json"
+require "diplomat"
+
+Diplomat.configure do |config|
+  config.url = "http://consul-consul:8500"
+end
 
 def token
   File.read("/var/run/secrets/kubernetes.io/serviceaccount/token")
@@ -36,4 +41,29 @@ def certificates
   end
 end
 
-puts [{ "targets" => certificates.flatten }].to_json
+def service(address)
+  {
+    "ID"      => address,
+    "Name"    => address,
+    "Address" => "127.0.0.1",
+    "Tags"    => [ "gke-ssl-cert-cn" ]
+  }
+end
+
+def defunct_services
+  cert_cache = certificates
+  Diplomat::Service.get_all.each_pair.reject do |service, tags|
+    (cert_cache.include?(service.to_s) && tags.include?("gke-ssl-cert-cn")) \
+      || !tags.include?("gke-ssl-cert-cn")
+  end
+end
+
+certificates.each do |address|
+  puts "registering: #{address}"
+  Diplomat::Service.register(service(address))
+end
+
+defunct_services.to_h.each do |service, _|
+  puts "deregistering: #{service}"
+  Diplomat::Service.deregister(service.to_s)
+end
