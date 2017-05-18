@@ -25,7 +25,7 @@ def certificates
 
   json = JSON.parse(response.body)
 
-  json["items"].each_with_object({}) do |item, collection|
+  json["items"].each_with_object([]) do |item, collection|
     key = %w(metadata annotations acme/certificate)
 
     next unless item.dig(*key)
