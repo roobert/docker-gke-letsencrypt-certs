@@ -46,15 +46,15 @@ def service(address)
     "ID"      => address,
     "Name"    => address,
     "Address" => "127.0.0.1",
-    "Tags"    => [ "gke-ssl-cert-cn" ]
+    "Tags"    => [ "gke-letsencrypt-cert-cn" ]
   }
 end
 
 def defunct_services
   cert_cache = certificates
   Diplomat::Service.get_all.each_pair.reject do |service, tags|
-    (cert_cache.include?(service.to_s) && tags.include?("gke-ssl-cert-cn")) \
-      || !tags.include?("gke-ssl-cert-cn")
+    (cert_cache.include?(service.to_s) && tags.include?("gke-letsencrypt-cert-cn")) \
+      || !tags.include?("gke-letsencrypt-cert-cn")
   end
 end
 
